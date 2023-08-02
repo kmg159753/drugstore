@@ -47,8 +47,32 @@ dependencies {
     testImplementation "org.testcontainers:spock:1.18.3"
     testImplementation "org.testcontainers:mariadb:1.18.3"
 
+    // spring retry
+    implementation 'org.springframework.retry:spring-retry'
+
+    // mockWebServer
+    testImplementation('com.squareup.okhttp3:okhttp:4.10.0')
+    testImplementation('com.squareup.okhttp3:mockwebserver:4.10.0')
+
+    // handlebars
+    implementation 'pl.allegro.tech.boot:handlebars-spring-boot-starter:0.3.4'
+
+    // https://github.com/seruco/base62
+    implementation 'io.seruco.encoding:base62:0.1.3'
+
+    // redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+processTestResources {
+    boolean hasProperty = project.hasProperty("KAKAO_REST_API_KEY")
+    System.out.println("Set kakao rest api key: $hasProperty")
+    filesMatching('**/application.yml') {
+        expand(project.properties)
+    }
 }
